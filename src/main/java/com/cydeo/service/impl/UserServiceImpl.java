@@ -6,6 +6,7 @@ import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.User;
 import com.cydeo.mapper.UserMapper;
 import com.cydeo.repository.UserRepository;
+import com.cydeo.service.KeycloakService;
 import com.cydeo.service.ProjectService;
 import com.cydeo.service.TaskService;
 import com.cydeo.service.UserService;
@@ -18,12 +19,15 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final KeycloakService keycloakService;
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final ProjectService projectService;
     private final TaskService taskService;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, @Lazy ProjectService projectService, @Lazy TaskService taskService) {
+    public UserServiceImpl(KeycloakService keycloakService, UserRepository userRepository, UserMapper userMapper, @Lazy ProjectService projectService, @Lazy TaskService taskService) {
+        this.keycloakService = keycloakService;
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.projectService = projectService;
@@ -50,6 +54,8 @@ public class UserServiceImpl implements UserService {
         User obj = userMapper.convertToEntity(user);
 
         userRepository.save(obj);
+
+        keycloakService.userCreate(user);
 
     }
 
