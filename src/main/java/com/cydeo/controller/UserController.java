@@ -1,5 +1,6 @@
 package com.cydeo.controller;
 
+import com.cydeo.annotation.ExecutionTime;
 import com.cydeo.dto.ResponseWrapper;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.service.UserService;
@@ -25,6 +26,7 @@ public class UserController {
     }
 
 
+    @ExecutionTime
     @GetMapping
     @RolesAllowed({"Manager","Admin"})
     @Operation(summary = "Get users")
@@ -33,6 +35,7 @@ public class UserController {
          return ResponseEntity.ok(new ResponseWrapper("Users are successfully retrieved",userDTOList, HttpStatus.OK));
     }
 
+    @ExecutionTime
     @GetMapping("/{username}")
     @RolesAllowed({"Admin"})
     @Operation(summary = "Get user by user name")
@@ -60,14 +63,14 @@ public class UserController {
 
     }
 
-    @DeleteMapping("/{username}")
-    @RolesAllowed({"Admin"})
-    @Operation(summary = "Delete user")
-    public ResponseEntity<ResponseWrapper> deleteUser(@PathVariable("username") String userName){
-        userService.delete(userName);
-        return ResponseEntity.ok(new ResponseWrapper("User is successfully deleted",HttpStatus.OK));
-
-    }
+//    @DeleteMapping("/{username}")
+//    @RolesAllowed({"Admin"})
+//    @Operation(summary = "Delete user")
+//    public ResponseEntity<ResponseWrapper> deleteUser(@PathVariable("username") String userName){
+//        userService.delete(userName);
+//        return ResponseEntity.ok(new ResponseWrapper("User is successfully deleted",HttpStatus.OK));
+//
+//    }
 
 
 }
